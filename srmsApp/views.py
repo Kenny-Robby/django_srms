@@ -5,8 +5,10 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from srmsApp import forms, models
+from decimal import Decimal
+from .models import Student_Subject_Result
 
 context={
     'page':'',
@@ -160,13 +162,14 @@ def delete_class(request):
     return HttpResponse(json.dumps(resp),content_type="application/json")
 
 
-
 #Subject
 @login_required
 def subject_mgt(request):
     context['page'] = 'subject_mgt'
     context['page_title'] = 'Subject Management'
     subjects = models.Subject.objects.all()
+    # for subject in subjects:
+    #     subject.credit = subject.credit 
     context['subjects'] = subjects
     return render(request,'subject_mgt.html',context)
 
@@ -360,13 +363,17 @@ def save_result(request):
             models.Student_Subject_Result.objects.filter(result = result).delete()
             has_error = False
             subjects= request.POST.getlist('subject[]')
-            grade= request.POST.getlist('grade[]')
+            score= request.POST.getlist('score[]')
+            # grade= request.POST.getlist('grade[]')
+            # grade_point= request.POST.getlist('grade_point[]')
             i = 0
             for subject in subjects:
                 data = {
                     'result' :rid,
                     'subject' :subject,
-                    'grade' : grade[i]
+                    'score' : score[i],
+                    # 'grade' : grade[i],
+                    # 'grade_point' : grade_point[i]
                 }
                 form2 = forms.SaveSubjectResult(data = data)
                 if form2.is_valid():
@@ -392,7 +399,8 @@ def save_result(request):
                     resp['msg'] += str(f"<br/> [{field.name}] "+error)
     return HttpResponse(json.dumps(resp),content_type="application/json")    
 
-@login_required
+
+@login_required 
 def delete_result(request):
     resp = { 'status':'failed', 'msg' : '' }
     if not request.method == 'POST':
@@ -431,3 +439,17 @@ def list_student_result(request, pk=None):
         context['has_sidebar'] = False
 
     return render(request, 'list_results.html', context)
+
+
+from django.db.models import Avg
+
+@login_required
+def result_mgt(request):
+    context = {}
+    context['page'] = 'result_mgt'
+    context['page_title'] = 'Result Management'
+    results = models.Result.objects.all()
+    for result in results:
+        result.average = result.student_subject_result_set.aggregate(Avg('score'))['score__avg'] or 0
+    context['results'] = results
+    return render(request, 'result_mgt.html', context)

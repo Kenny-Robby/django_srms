@@ -49,8 +49,8 @@
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <div class="form-group mb-3 ">
-                    <label for="grade" class="control-label">Mark</label>
-                    <input type="number" step="any" id="grade" class="form-control form-control-sm py-1 rounded-0 text-end">
+                    <label for="score" class="control-label">Score</label>
+                    <input type="number" step="any" id="score" class="form-control form-control-sm py-1 rounded-0 text-end">
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -66,10 +66,13 @@
             </colgroup>
             <thead>
                 <tr class="bg-info bg-gradient">
-                    <th class="px-2 py-1 text-center">Subject</th>
-                    <th class="px-2 py-1 text-center">Mark</th>
-                    <th class="px-2 py-1 text-center">Action</th>
+                    <th class="px-2 py-1 text-center col">Subject</th>
+                    <th class="px-2 py-1 text-center col">Mark</th>
+                    <!-- <th class="px-2 py-1 text-center col">Grade</th> 
+                    <th class="px-2 py-1 text-center col">Grade Point</th>  -->
+                    <th class="px-2 py-1 text-center col">Action</th>
                 </tr>
+                
             </thead>
             <tbody>
                 {% for mark in marks %}
@@ -93,26 +96,95 @@
                 </tr>
             </tfoot>
         </table>
+        <!-- <table class="table table-bordered table-striped" id="marks-list">
+            <thead>
+                <tr class="bg-info bg-gradient">
+                    <th class="px-2 py-1 text-center">Subject</th>
+                    <th class="px-2 py-1 text-center">Scores</th>
+                    <th class="px-2 py-1 text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mark in marks %}
+                <tr>
+                    <td class="px-2 py-1 align-middle">
+                        <input type="hidden" name="subject[]" value="{{ mark.subject.id }}">
+                        <input type="hidden" name="score[]" value="{{ mark.score }}">
+                        <span class="subject_name">{{ mark.subject }}</span>
+                    </td>
+                    <td class="px-2 py-1 text-center align-middle">
+                        <button class="btn btn-outline-danger mb-0 rounded-0 btn-sm rem-item py-1 px-3" type="button"><i class="fa fa-times"></i></button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th class="px-2 py-1"><b>Average</b></th>
+                    <th colspan="2" class="px-2 py-1 fw-bolder" id="average">0.00</th>
+                </tr>
+            </tfoot>
+        </table> -->
+        
     </form>
 </div>
 <noscript id="mark-item-clone">
 <tr>
     <td class="px-2 py-1 align-middle">
         <input type="hidden" name="subject[]" value="">
-        <input type="hidden" name="grade[]" value="">
+        <input type="hidden" name="score[]" value="">
         <span class="subject_name"></span>
     </td>
     <td class="px-2 py-1 text-end subject_mark align-middle"></td>
+    <!-- <td class="px-2 py-1 text-end subject_mark align-middle"></td>
+    <td class="px-2 py-1 text-end subject_mark align-middle"></td> -->
+    
+
     <td class="px-2 py-1 text-center align-middle">
         <button class="btn btn-outline-danger mb-0 rounded-0 btn-sm rem-item py-1 px-3" type="button"><i class="fa fa-times"></i></button>
     </td>
 </tr>
 </noscript>
 <script>
+     function calculate_grade(score) {
+         
+        if (score >= 70) {
+            return 'A';
+        } else if (60 <= score <= 69) {
+            return 'B+';
+        } else if (50 <= score <= 59) {
+            return 'B';
+        } else if (40 <= score <= 49) {
+            return 'C';
+        } else if (35 <= score <= 39) {
+            return 'D';
+        } else {
+            return 'F';
+        }
+    }
+
+    function calculate_grade_point(score) {
+        
+        if (score >= 70) {
+            return 5.0;
+        } else if (60 <= score <= 69) {
+            return 4.0;
+        } else if (50 <= score <= 59) {
+            return 3.0;
+        } else if (40 <= score <= 49) {
+            return 2.0;
+        } else if (35 <= score <= 39) {
+            return 1.0;
+        } else {
+            return 0.0;
+        }
+    }
+
+
     function calc_average() {
         var mark_total = 0;
         $('table#marks-list tbody tr').each(function() {
-            var mark = $(this).find('input[name="grade[]"]').val()
+            var mark = $(this).find('input[name="score[]"]').val()
             mark_total += parseFloat(mark)
         })
         $('#average').text(parseFloat(mark_total / $('table#marks-list tbody tr').length).toLocaleString('en-Us', {
@@ -137,24 +209,24 @@
             })
             $('#add_to_list').click(function() {
                 var subject_id = $("#subject").val()
-                var grade = $("#grade").val()
+                var score = $("#score").val()
                 if (subject_id == '') {
                     $("#subject").focus()
                     return false
                 }
-                if (grade == '') {
-                    $("#grade").focus()
+                if (score == '') {
+                    $("#score").focus()
                     return false
                 }
                 var subject = $('#subject option[value="' + (subject_id) + '"]').text()
                 var tr = $($('noscript#mark-item-clone').html()).clone()
                 tr.find("input[name='subject[]']").val(subject_id)
-                tr.find("input[name='grade[]']").val(grade)
+                tr.find("input[name='score[]']").val(score)
                 tr.find(".subject_name").text(subject)
-                tr.find(".subject_mark").text(grade)
+                tr.find(".subject_mark").text(score)
                 $('table#marks-list tbody').append(tr)
                 $("#subject").val("").trigger('change')
-                $("#grade").val("")
+                $("#score").val("")
                 tr.find('.rem-item').click(function() {
                     if (confirm("Are you sure to remove this from list?") === true) {
                         tr.remove();

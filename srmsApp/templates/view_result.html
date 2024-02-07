@@ -1,5 +1,4 @@
-
-{% load humanize %}
+<!-- {% load humanize %}
 <style>
     #uni_modal .modal-footer {
         display: none !important
@@ -8,11 +7,86 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <dl>
+                <dt>Student ID/Code</dt>
+                <dd class="ps-4 fw-bolder text-primary">{{ result.student.student_id }}</dd>
+                <dt>Name</dt>
+                <dd class="ps-4 fw-bolder text-primary">{{ result.student.get_name }}</dd>
+                <dt>Gender</dt>
+                <dd class="ps-4 fw-bolder text-primary">{{ result.student.gender }}</dd>
+            </dl>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <dl>
+                <dt>Class</dt>
+                <dd class="ps-4 fw-bolder text-primary">{{ result.student.classI }}</dd>
+                <dt>Semester</dt>
+                <dd class="ps-4 fw-bolder text-primary">{{ result.semester }}</dd>
+            </dl>
+        </div>
+    </div>
+    <hr>
+    <table class="table table-bordered table-striped" id="marks-list">
+        <colgroup>
+            <col width="50%">
+            <col width="50%">
+        </colgroup>
+        <thead>
+            <tr class="bg-info bg-gradient">
+                <th class="px-2 py-1 text-center">Subject</th>
+                <th class="px-2 py-1 text-center">Mark</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mark in marks %}
+            <tr>
+                <td class="px-2 py-1 align-middle">
+                    <span class="subject_name">{{ mark.subject }}</span>
+                </td>
+                <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.score }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th class="px-2 py-1"><b>Average</b></th>
+                <th class="px-2 py-1 fw-bolder text-end" id="average">{{ result.average }}</th>
+            </tr>
+        </tfoot>
+    </table>
+    <div class="text-end mt-3">
+        <button class="btn btn-light bg-gradient btn-sm rounded-0 mb-0" type="button" data-bs-dismiss="modal"><i class="material-icons">close</i> Close</button>
+    </div>
+</div>
+ -->
+
+
+
+
+{% load humanize %}
+<style>
+    #uni_modal .modal-footer {
+        display: none !important
+    }
+</style>
+<div class="container-fluid">
+    <h1 class="text-center">DAR ES SALAAM INSTITUTE OF TECHNOLOGY</h1>
+    <h1 class="text-center">ACADEMIC TRANSCRIPT</h1>
+
+    <!-- Logo -->
+    <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+            <img src="path_to_your_logo" alt="Your Logo">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         </div>
         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
             <dl>
                 <dt>Birthdate</dt>
-                <dd class="ps-4 fw-bolder text-primary">yettoshow</dd>
+                <dd class="ps-4 fw-bolder text-primary">{{ student.birthdate|date:'d/m/Y' }}</dd>
             </dl>
         </div>
         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
@@ -31,7 +105,7 @@
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <dl>
-                <dt >DATE OF ADMISSION: yettoshow</dt>
+                <dt >DATE OF ADMISSION: {{ student.date_created|date:"Y-m-d" }}</dt>
             </dl>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -79,7 +153,7 @@
                 <td class="px-2 py-1 align-middle">
                     <span class="subject_name">{{ mark.subject }}</span>
                 </td>
-                <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.grade }}</td>
+                <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.score }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -90,6 +164,210 @@
             </tr>
         </tfoot>
     </table>
+
+    <!-- Additional tables -->
+    <div class="row">
+        <!-- Table 1 -->
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th colspan="3" class="text-center">Semester 1</th>
+                    </tr>
+                    <tr>
+                        <th>Code</th>
+                        <th>Module Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table data for Semester 1 -->
+                    <!-- Add rows here -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end">Semester GPA: [Semester 1 GPA]</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!-- Table 2 -->
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th colspan="3" class="text-center">Semester 2</th>
+                    </tr>
+                    <tr>
+                        <th>Code</th>
+                        <th>Module Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table data for Semester 2 -->
+                    <!-- Add rows here -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end">Semester GPA: [Semester 2 GPA]</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!-- Table 3 -->
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th colspan="3" class="text-center">Semester 3</th>
+                    </tr>
+                    <tr>
+                        <th>Code</th>
+                        <th>Module Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table data for Semester 3 -->
+                    <!-- Add rows here -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end">Semester GPA: [Semester 3 GPA]</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Table 4 -->
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th colspan="3" class="text-center">Semester 4</th>
+                    </tr>
+                    <tr>
+                        <th>Code</th>
+                        <th>Module Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table data for Semester 4 -->
+                    <!-- Add rows here -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end">Semester GPA: [Semester 4 GPA]</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!-- Table 5 -->
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th colspan="3" class="text-center">Semester 5</th>
+                    </tr>
+                    <tr>
+                        <th>Code</th>
+                        <th>Module Name</th>
+                        <th>score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table data for Semester 5 -->
+                    <!-- Add rows here -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end">Semester GPA: [Semester 5 GPA]</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!-- Table 6 -->
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th colspan="3" class="text-center">Semester 6</th>
+                    </tr>
+                    <tr>
+                        <th>Code</th>
+                        <th>Module Name</th>
+                        <th>score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table data for Semester 6 -->
+                    <!-- Add rows here -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end">Semester GPA: [Semester 6 GPA]</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Table 7 -->
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th colspan="3" class="text-center">Semester 7</th>
+                    </tr>
+                    <tr>
+                        <th>Code</th>
+                        <th>Module Name</th>
+                        <th>score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table data for Semester 7 -->
+                    <!-- Add rows here -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end">Semester GPA: [Semester 7 GPA]</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!-- Table 8 -->
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th colspan="3" class="text-center">Semester 8</th>
+                    </tr>
+                    <tr>
+                        <th>Code</th>
+                        <th>Module Name</th>
+                        <th>score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table data for Semester 8 -->
+                    <!-- Add rows here -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end">Semester GPA: [Semester 8 GPA]</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <!-- End of additional tables -->
+
     <div class="text-end mt-3">
         <button class="btn btn-light bg-gradient btn-sm rounded-0 mb-0" type="button" data-bs-dismiss="modal"><i class="material-icons">close</i> Close</button>
     </div>
@@ -117,3 +395,93 @@
 
 
 
+
+
+
+
+<!-- 
+
+
+
+
+
+ {% load humanize %}
+
+<style>
+    .modal-footer {
+        display: none;
+    }
+</style>
+
+<div class="container-fluid">
+    <h1 class="text-center">DAR ES SALAAM INSTITUTE OF TECHNOLOGY</h1>
+    <h2 class="text-center">ACADEMIC TRANSCRIPT</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="row"> -->
+                <!-- Row 1 -->
+                <!-- <dt class="col-sm-4 text-end">Birthdate</dt>
+                <dd class="col-sm-2">{{ result.student.birthdate|date:"d/m/Y" }}</dd>
+                
+                <dt class="col-sm-2 text-end">Gender</dt>
+                <dd class="col-sm-2">{{ result.student.gender }}</dd>
+            
+                <dt class="col-sm-2 text-end">Student ID</dt>
+                <dd class="col-sm-2">{{ result.student.id }}</dd> -->
+            
+                <!-- Row 2 -->
+                <!-- <dt class="col-sm-4 text-end">Date of Admission</dt>
+                <dd class="col-sm-4">{{ result.student.date_of_admission|date:"d/m/Y" }}</dd>
+                
+                <dt class="col-sm-4 text-end">Date of Graduation</dt>
+                <dd class="col-sm-4">{{ result.student.date_of_graduation|date:"d/m/Y" }}</dd>
+             -->
+                <!-- Row 3 -->
+                <!-- <dt class="col-sm-4">Award Title</dt>
+                <dd class="col-sm-8">{{ result.student.award_title }}</dd>
+             -->
+                <!-- Row 4 -->
+                <!-- <dt class="col-sm-4">Classification of Award</dt>
+                <dd class="col-sm-8">{{ result.student.classification_of_award }}</dd>
+             -->
+                <!-- Row 5 -->
+                <!-- <dt class="col-sm-4">Overall GPA</dt>
+                <dd class="col-sm-8">{{ result.overall_gpa }}</dd>
+            </dl>
+            
+        </div>
+    </div>
+    <hr>
+    <table class="table table-bordered table-striped" id="marks-list">
+        <colgroup>
+            <col width="50%">
+            <col width="50%">
+        </colgroup>
+        <thead>
+            <tr class="bg-info bg-gradient">
+                <th class="px-2 py-1 text-center">Subject</th>
+                <th class="px-2 py-1 text-center">Mark</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mark in marks %}
+            <tr>
+                <td class="px-2 py-1 align-middle">
+                    <span class="subject_name">{{ mark.subject }}</span>
+                </td>
+                <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.score }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th class="px-2 py-1"><b>Average</b></th>
+                <th class="px-2 py-1 fw-bolder text-end" id="average">{{ result.average }}</th>
+            </tr>
+        </tfoot>
+    </table>
+    <div class="text-end mt-3">
+        <button class="btn btn-light bg-gradient btn-sm rounded-0 mb-0" type="button" data-bs-dismiss="modal"><i class="material-icons">close</i> Close</button>
+    </div>
+</div> -->

@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
             name='Student_Subject_Result',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('grade', models.FloatField(default=0)),
+                ('score', models.FloatField(default=0)),
                 ('result', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='srmsApp.result')),
                 ('subject', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='srmsApp.subject')),
             ],

@@ -76,11 +76,12 @@ class SaveClass(forms.ModelForm):
 
 class SaveSubject(forms.ModelForm):
     name = forms.CharField(max_length="250")
+    credits = forms.IntegerField(label="Credits", min_value=1)  # Added field for subject credits
     status = forms.ChoiceField(choices=[('1','Active'),('2','Inctive')])
 
     class Meta:
         model = models.Subject
-        fields = ('name', 'status',)
+        fields = ('name','credit', 'status',)
     
     def clean_name(self):
         name = self.cleaned_data['name']
@@ -104,12 +105,14 @@ class SaveStudent(forms.ModelForm):
     first_name = forms.CharField(max_length="500", label="First Name")
     middle_name = forms.CharField(max_length="500", label="Middle Name", required=False)
     last_name = forms.CharField(max_length="500", label="Last Name")
+    birthdate = forms.DateField(label="Birthdate", required=False)
     gender = forms.ChoiceField(choices=[('Male','Male'),('Female','Female')], label="Gender")
     status = forms.ChoiceField(choices = [('1' ,'Active'),('2' ,'Inactive')], label="Status")
+    
 
     class Meta:
         model = models.Student
-        fields = ('classI', 'student_id', 'first_name', 'middle_name', 'last_name', 'gender','status',)
+        fields = ('classI', 'student_id', 'first_name', 'middle_name', 'last_name', 'birthdate', 'gender','status',)
     
     def clean_classI(self):
         class_id = self.cleaned_data['classI']
@@ -158,11 +161,14 @@ class SaveResult(forms.ModelForm):
 class SaveSubjectResult(forms.ModelForm):
     result = forms.CharField(max_length="30", label="Result ID")
     subject = forms.CharField(max_length="30", label="Subject")
-    grade = forms.CharField(max_length="100", label="Grade")
+    score = forms.CharField(max_length="100", label="Score")
+    # grade = forms.CharField(max_length="100", label="Grade")
+    # grade_point = forms.CharField(max_length="100", label="Grade Point")
+
     
     class Meta:
         model = models.Student_Subject_Result
-        fields = ('result','subject','grade',)
+        fields = ('result','subject','score',)
     
     def clean_result(self):
         result = self.cleaned_data['result']
@@ -183,4 +189,84 @@ class SaveSubjectResult(forms.ModelForm):
         except Exception as err:
             print(err)
             raise forms.ValidationError(f"Invalid field value")
+        
 
+# class SaveResult(forms.ModelForm):
+#     student = forms.CharField(max_length="30", label="Student")
+#     semester = forms.CharField(max_length="250", label="Semester")
+    
+#     class Meta:
+#         model = models.Result
+#         fields = ('student', 'semester',)
+
+# class SaveSubjectResult(forms.ModelForm):
+#     result = forms.CharField(max_length="30", label="Result ID")
+#     subject = forms.CharField(max_length="30", label="Subject")
+#     score = forms.CharField(max_length="100", label="Score")
+    
+#     class Meta:
+#         model = models.Student_Subject_Result
+#         fields = ('result','subject','score',)
+
+
+
+
+
+
+# class SaveSubjectResult(forms.ModelForm):
+#     result = forms.CharField(max_length="30", label="Result ID")
+#     subject = forms.CharField(max_length="30", label="Subject")
+#     score = forms.CharField(max_length="100", label="Score")
+#     grade = forms.CharField(max_length=2, label="Grade", required=False)
+#     grade_point = forms.FloatField(label="Grade Point", required=False)
+    
+#     class Meta:
+#         model = models.Student_Subject_Result
+#         fields = ('result', 'subject', 'score', 'grade', 'grade_point',)
+    
+#     def clean_result(self):
+#         result = self.cleaned_data['result']
+
+#         try:
+#             resultI = models.Result.objects.get(id=result)
+#             return resultI
+#         except models.Result.DoesNotExist:
+#             raise forms.ValidationError("Invalid result ID")
+    
+#     def clean_subject(self):
+#         subject = self.cleaned_data['subject']
+
+#         try:
+#             subjectI = models.Subject.objects.get(id=subject)
+#             return subjectI
+#         except models.Subject.DoesNotExist:
+#             raise forms.ValidationError("Invalid subject ID")
+
+#     def clean(self):
+#         cleaned_data = super().clean()
+#         score = cleaned_data.get('score')
+
+#         if score:
+#             try:
+#                 score = float(score)
+#                 if score >= 70:
+#                     cleaned_data['grade'] = 'A'
+#                     cleaned_data['grade_point'] = 5.0
+#                 elif 60 <= score < 70:
+#                     cleaned_data['grade'] = 'B+'
+#                     cleaned_data['grade_point'] = 4.0
+#                 elif 50 <= score < 60:
+#                     cleaned_data['grade'] = 'B'
+#                     cleaned_data['grade_point'] = 3.0
+#                 elif 40 <= score < 50:
+#                     cleaned_data['grade'] = 'C'
+#                     cleaned_data['grade_point'] = 2.0
+#                 elif 35 <= score < 40:
+#                     cleaned_data['grade'] = 'D'
+#                     cleaned_data['grade_point'] = 1.0
+#                 else:
+#                     cleaned_data['grade'] = 'F'
+#                     cleaned_data['grade_point'] = 0.0
+#             except ValueError:
+#                 self.add_error('score', 'Score must be a valid number')
+#         return cleaned_data
