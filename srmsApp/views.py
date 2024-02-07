@@ -168,8 +168,6 @@ def subject_mgt(request):
     context['page'] = 'subject_mgt'
     context['page_title'] = 'Subject Management'
     subjects = models.Subject.objects.all()
-    # for subject in subjects:
-    #     subject.credit = subject.credit 
     context['subjects'] = subjects
     return render(request,'subject_mgt.html',context)
 
