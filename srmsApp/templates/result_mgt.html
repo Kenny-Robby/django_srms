@@ -25,11 +25,12 @@
                         <thead>
                             <tr class="bg-gradient bg-primary bg-opacity-50 text-light">
                                 <th class="px-2 py-2 text-center">#</th>
-                                <th class="px-2 py-2 text-center">DateTime</th>
+                                <!-- <th class="px-2 py-2 text-center">DateTime</th> -->
                                 <th class="px-2 py-2 text-center">Student</th>
                                 <th class="px-2 py-2 text-center">Semester</th>
                                 <th class="px-2 py-2 text-center">Subjects</th>
                                 <th class="px-2 py-2 text-center">Average</th>
+                                <th class="px-2 py-2 text-center">GPA</th>
                                 <th class="px-2 py-2 text-center">Action</th>
                             </tr>
                         </thead>
@@ -37,11 +38,12 @@
                             {% for result in results %}
                             <tr>
                                 <td class="px-2 py-1 align-middle text-center">{{ forloop.counter }}</td>
-                                <td class="px-2 py-1 align-middle">{{ result.date_created|date:"Y-m-d" }}</td>
+                                <!-- <td class="px-2 py-1 align-middle">{{ result.date_created|date:"Y-m-d" }}</td> -->
                                 <td class="px-2 py-1 align-middle">{{ result.student }}</td>
                                 <td class="px-2 py-1 align-middle">{{ result.semester }}</td>
                                 <td class="px-2 py-1 align-middle text-end">{{ result.countSubjects|intcomma }}</td>
                                 <td class="px-2 py-1 align-middle text-end">{{ result.average|floatformat:2|intcomma }}</td>
+                                <td class="px-2 py-1 align-middle text-end">{{ result.calculate_gpa|floatformat:2|intcomma }}</td>
                                 <td class="px-2 py-1 align-middle text-center">
                                     <div class="dropdown">
                                         <button class="btn btn-primary btn-sm mb-0 rounded-0 dropdown-toggle" type="button" id="actionBtn-{{ result.pk }}" data-bs-toggle="dropdown" aria-expanded="false">

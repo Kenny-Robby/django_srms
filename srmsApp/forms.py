@@ -76,12 +76,13 @@ class SaveClass(forms.ModelForm):
 
 class SaveSubject(forms.ModelForm):
     name = forms.CharField(max_length="250")
-    credits = forms.IntegerField(label="Credits", min_value=1)  # Added field for subject credits
+    code = forms.CharField(max_length="250", label="Code") #field for module code
+    credit = forms.IntegerField(label="Credits", min_value=1)  # Added field for subject credits
     status = forms.ChoiceField(choices=[('1','Active'),('2','Inctive')])
 
     class Meta:
         model = models.Subject
-        fields = ('name','credit', 'status',)
+        fields = ('name','code','credit', 'status',)
     
     def clean_name(self):
         name = self.cleaned_data['name']

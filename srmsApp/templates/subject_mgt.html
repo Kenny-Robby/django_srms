@@ -21,8 +21,9 @@
                         <colgroup>
                             <col width="5%">
                             <col width="20%">
-                            <col width="35%">
-                            <col width="10%">
+                            <col width="25%">
+                            <col width="10%"> 
+                            <col width="10%"> 
                             <col width="15%">
                             <col width="15%">
                         </colgroup>
@@ -31,6 +32,7 @@
                                 <th class="px-2 py-2 text-center">#</th>
                                 <th class="px-2 py-2 text-center">DateTime</th>
                                 <th class="px-2 py-2 text-center">Subject Name</th>
+                                <th class="px-2 py-2 text-center">Code</th>
                                 <th class="px-2 py-2 text-center">Credits</th>
                                 <th class="px-2 py-2 text-center">Status</th>
                                 <th class="px-2 py-2 text-center">Action</th>
@@ -42,7 +44,8 @@
                                 <td class="px-2 py-1 align-middle text-center">{{ forloop.counter }}</td>
                                 <td class="px-2 py-1 align-middle">{{ subject.date_created|date:"Y-m-d" }}</td>
                                 <td class="px-2 py-1 align-middle">{{ subject.name }}</td>
-                                <td class="px-2 py-1 align-middle">{{ subject.credits }}</td>  <!-- Added column for Credits -->
+                                <td class="px-2 py-1 align-middle">{{ subject.code }}</td>  <!-- Added column for codes -->
+                                <td class="px-2 py-1 align-middle">{{ subject.credit }}</td>  <!-- Added column for Credits -->
                                 <td class="px-1 py-1 align-middle text-center">
                                     {% if subject.status == '1' %}
                                     <span class="badge bg-primary bg-gradient rounded-pill px-2">Active</span> {% else %}

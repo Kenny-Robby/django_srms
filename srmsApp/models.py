@@ -16,6 +16,7 @@ class Class(models.Model):
 
 class Subject(models.Model):
     name = models.CharField(max_length=250)
+    code = models.CharField(max_length=250, default='', blank=True)
     credit = models.IntegerField(default=0)
     status = models.CharField(max_length=2, choices=(('1','Active'),('2','Inactive')), default = 1)
     date_created = models.DateTimeField(default=timezone.now)
@@ -46,6 +47,7 @@ class Student(models.Model):
 class Result(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     semester = models.CharField(max_length=250,blank=True)
+    gpa = models.FloatField(blank=True, null=True)
     date_created = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(auto_now=True)
 
@@ -69,14 +71,27 @@ class Result(models.Model):
             print(err)
             average = 0
         return average
+    
+    # # gpa
+    def calculate_gpa(self):
+        total_credits = 0
+        total_grade_points = 0
+        subjects_results = Student_Subject_Result.objects.filter(result=self)
 
-# class Student_Subject_Result(models.Model):
-#     result = models.ForeignKey(Result, on_delete= models.CASCADE)
-#     subject = models.ForeignKey(Subject, on_delete= models.CASCADE)
-#     score = models.FloatField(default=0)
+        for subject_result in subjects_results:
+            credit = subject_result.subject.credit
+            grade_point = subject_result.grade_point
+            total_credits += credit
+            total_grade_points += grade_point * credit
 
-#     def __str__(self):
-#         return f"{self.result} - {self.subject}"
+        if total_credits > 0:
+            gpa = total_grade_points / total_credits
+            return round(gpa, 2)
+        else:
+            return 0.0
+
+
+
 class Student_Subject_Result(models.Model):
     result = models.ForeignKey(Result, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
@@ -109,7 +124,23 @@ class Student_Subject_Result(models.Model):
         return f"{self.result} - {self.subject} - Score: {self.score} - Grade: {self.grade} - Grade Point: {self.grade_point}"
 
 
+      # gpa
+    def calculate_gpa(self):
+        total_credits = 0
+        total_grade_points = 0
+        subjects_results = Student_Subject_Result.objects.filter(result=self)
 
+        for subject_result in subjects_results:
+            credit = subject_result.subject.credit
+            grade_point = subject_result.grade_point
+            total_credits += credit
+            total_grade_points += grade_point * credit
+
+        if total_credits > 0:
+            gpa = total_grade_points / total_credits
+            return round(gpa, 2)
+        else:
+            return 0.0
 
 
 
