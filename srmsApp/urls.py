@@ -3,6 +3,7 @@ from django.urls import path
 from srmsApp import views
 from django.contrib.auth import views as auth_views
 from django.views.generic.base import RedirectView
+from . import views
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -49,4 +50,7 @@ urlpatterns = [
     path('select_student', views.select_student,name="select-student"),
     path('list_result', views.list_student_result,name="list-result"),
     path('list_result/<int:pk>', views.list_student_result),
+    path('student_score', views.student_score_view, name='student_score'),
+    path('student_score/<int:pk>', views.student_score_view, name='student_score'),
+
 ]+ static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

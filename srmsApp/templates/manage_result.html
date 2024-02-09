@@ -68,8 +68,8 @@
                 <tr class="bg-info bg-gradient">
                     <th class="px-2 py-1 text-center col">Subject</th>
                     <th class="px-2 py-1 text-center col">Mark</th>
-                    <!-- <th class="px-2 py-1 text-center col">Grade</th> 
-                    <th class="px-2 py-1 text-center col">Grade Point</th>  -->
+                    <!-- <th class="px-2 py-1 text-center col">Grade</th>  
+                    <th class="px-2 py-1 text-center col">Grade Point</th>   -->
                     <th class="px-2 py-1 text-center col">Action</th>
                 </tr>
                 
@@ -151,43 +151,16 @@
 </tr>
 </noscript>
 <script>
+
+    $(document).ready(function() {
+        $('#subject').change(function() {
+            var subjectId = $(this).val();
+            if (subjectId) {
+                window.location.href = 'student_score.html?subjectId=' + subjectId;
+            }
+        });
+    });
    
-    // gpa
-    // function calc_gpa() {
-    //     var gpa_total = 0;
-    //     var credit_total = 0;
-
-    //         // Loop through each row in the table
-    //     $('table#marks-list tbody tr').each(function() {
-    //         var score = parseFloat($(this).find('input[name="score[]"]').val());
-    //         var credit = parseInt($(this).find('input[name="credit[]"]').val());
-
-    //         // Calculate grade point for the score
-    //         var grade_point = calculate_grade_point(score);
-
-    //         // Add the grade point multiplied by the credit to the total GPA
-    //         gpa_total += grade_point * credit;
-
-    //         // Add the credit to the total credits
-    //         credit_total += credit;
-    //     });
-
-    //     // Calculate the GPA
-    //     var gpa = (gpa_total / credit_total).toFixed(2);
-        
-    //     // Display the GPA
-    //     $('#gpa').text(gpa);
-    // }
-
-    //     $(function() {
-    //     // Call calc_gpa when the page loads
-    //     calc_gpa();
-
-    //     // Other code...    
-    //     });
-
-
-
     function calc_average() {
         var mark_total = 0;
         $('table#marks-list tbody tr').each(function() {
@@ -201,17 +174,6 @@
     }
 
     
-    // function calc_gpa() {
-    //     var grade_point_total = 0;
-    //     $('table#marks-list tbody tr').each(function() {
-    //         var mark = $(this).find('input[name="score[]"]').val()
-    //         mark_total += parseFloat(mark)
-    //     })
-    //     $('#average').text(parseFloat(mark_total / $('table#marks-list tbody tr').length).toLocaleString('en-Us', {
-    //         style: 'decimal',
-    //         maximumFractionDigits: 2
-    //     }))
-    // }
 
     $(function() {
         $('#uni_modal').on('shown.bs.modal', function() {

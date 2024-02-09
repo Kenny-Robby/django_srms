@@ -9,6 +9,7 @@ from django.http import HttpResponse, JsonResponse
 from srmsApp import forms, models
 from decimal import Decimal
 from .models import Student_Subject_Result
+from django.db.models import Avg
 
 context={
     'page':'',
@@ -445,7 +446,7 @@ def list_student_result(request, pk=None):
     return render(request, 'list_results.html', context)
 
 
-from django.db.models import Avg
+
 
 @login_required
 def result_mgt(request):
@@ -457,3 +458,19 @@ def result_mgt(request):
         result.average = result.student_subject_result_set.aggregate(Avg('score'))['score__avg'] or 0
     context['results'] = results
     return render(request, 'result_mgt.html', context)
+
+
+@login_required
+def student_score_view(request):
+    try:
+        student = models.Student.objects.first()  # Retrieve the first student object from the database
+    except models.Student.DoesNotExist:
+        student = None
+
+    context = {
+        'page': 'student_score',
+        'page_title': 'Student Score',
+        'student': student,  # Pass the student object to the template context
+    }
+
+    return render(request, 'student_score.html', context)

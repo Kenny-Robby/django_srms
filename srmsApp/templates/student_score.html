@@ -1,0 +1,104 @@
+{% load customfilter %}
+<div class="container-fluid">
+    <form action="" id="score-form">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-group mb-3 ">
+                    <label for="student" class="control-label">Student</label>
+                    <select name="student" id="student" class="form-select rounded-0" required>
+                        <option value="" disabled selected>Please Select Here</option>
+                        {% for student in students %}
+                        <option value="{{ student.id }}">{{ student.student_id }} - {{ student.get_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-group mb-3 ">
+                    <label for="name" class="control-label">Name</label>
+                    <input type="text" id="name" class="form-control form-control-sm py-1 rounded-0" disabled>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row align-items-end">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-group mb-3 ">
+                    <label for="input_ca" class="control-label">Input CA</label>
+                    <input type="number" id="input_ca" class="form-control form-control-sm py-1 rounded-0" step="any" required>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="form-group mb-3 ">
+                    <label for="input_se" class="control-label">Input SE</label>
+                    <input type="number" id="input_se" class="form-control form-control-sm py-1 rounded-0" step="any" required>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <button class="btn btn-primary btn-sm rounded-0" id="calculate_mark" type="button">Calculate Mark</button>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <table class="table table-bordered table-striped" id="student-score">
+                    <colgroup>
+                        <col width="30%">
+                        <col width="30%">
+                        <col width="40%">
+                    </colgroup>
+                    <thead>
+                        <tr class="bg-info bg-gradient">
+                            <th class="px-2 py-1 text-center">Student ID</th>
+                            <th class="px-2 py-1 text-center">Name</th>
+                            <th class="px-2 py-1 text-center">Mark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Student scores will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#student').change(function () {
+            var student_id = $(this).val();
+            $.ajax({
+                url: "{% url 'get_student_name' %}",
+                type: 'POST',
+                data: {
+                    student_id: student_id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function (response) {
+                    $('#name').val(response.name);
+                }
+            });
+        });
+
+        $('#calculate_mark').click(function () {
+            var student_id = $('#student').val();
+            var input_ca = $('#input_ca').val();
+            var input_se = $('#input_se').val();
+
+            // Calculate mark
+            var mark = parseFloat(input_ca) + parseFloat(input_se);
+
+            // Append to table
+            var row = '<tr>' +
+                '<td class="px-2 py-1 text-center">' + student_id + '</td>' +
+                '<td class="px-2 py-1 text-center">' + $('#name').val() + '</td>' +
+                '<td class="px-2 py-1 text-center">' + mark + '</td>' +
+                '</tr>';
+            $('#student-score tbody').html(row);
+        });
+    });
+</script>
