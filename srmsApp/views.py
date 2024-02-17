@@ -1,5 +1,5 @@
 from turtle import clear
-from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 import json
@@ -8,8 +8,9 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse, JsonResponse
 from srmsApp import forms, models
 from decimal import Decimal
-from .models import Student_Subject_Result
+from .models import Student_Subject_Result, Subject
 from django.db.models import Avg
+from .models import Subject, Semester
 
 context={
     'page':'',
@@ -31,6 +32,20 @@ def home(request):
     context['has_navigation'] = True
     context['has_sidebar'] = True
     return render(request,'home.html',context)
+
+#login for lecturer
+@login_required
+def home2(request):
+    context['page'] = 'home2'
+    context['page_title'] = 'Dashboard'
+    context['classes'] = models.Class.objects.filter(status =1).count()
+    context['subjects'] = models.Subject.objects.filter(status =1).count()
+    context['students'] = models.Student.objects.filter(status =1).count()
+    context['results'] = models.Result.objects.count()
+    context['has_navigation'] = True
+    context['has_sidebar'] = True
+    return render(request,'home2.html',context)
+
 
 #login
 def login_user(request):
@@ -221,6 +236,9 @@ def save_subject(request):
                     resp['msg'] += str(f"<br/>"+error)
     return HttpResponse(json.dumps(resp),content_type="application/json")    
 
+
+
+
 @login_required
 def delete_subject(request):
     resp = { 'status':'failed', 'msg' : '' }
@@ -245,6 +263,18 @@ def student_mgt(request):
     students = models.Student.objects.all()
     context['students'] = students
     return render(request,'student_mgt.html',context)
+
+
+#for lecturer
+@login_required
+def student_mgt2(request):
+    context['page'] = 'student_mgt2'
+    context['page_title'] = 'Student Management'
+    students = models.Student.objects.all()
+    context['students'] = students
+    return render(request,'student_mgt2.html',context)
+
+
 
 
 @login_required
@@ -316,6 +346,15 @@ def result_mgt(request):
     context['results'] = results
     return render(request,'result_mgt.html',context)
 
+#for lecturer
+@login_required
+def result_mgt2(request):
+    context['page'] = 'result_mgt2'
+    context['page_title'] = 'Result Management'
+    results =models.Result.objects.all()
+    context['results'] = results
+    return render(request,'result_mgt2.html',context)
+
 
 @login_required
 def manage_result(request, pk = None):
@@ -369,16 +408,12 @@ def save_result(request):
             has_error = False
             subjects= request.POST.getlist('subject[]')
             score= request.POST.getlist('score[]')
-            # grade= request.POST.getlist('grade[]')
-            # grade_point= request.POST.getlist('grade_point[]')
             i = 0
             for subject in subjects:
                 data = {
                     'result' :rid,
                     'subject' :subject,
                     'score' : score[i],
-                    # 'grade' : grade[i],
-                    # 'grade_point' : grade_point[i]
                 }
                 form2 = forms.SaveSubjectResult(data = data)
                 if form2.is_valid():
@@ -460,17 +495,101 @@ def result_mgt(request):
     return render(request, 'result_mgt.html', context)
 
 
-@login_required
-def student_score_view(request):
-    try:
-        student = models.Student.objects.first()  # Retrieve the first student object from the database
-    except models.Student.DoesNotExist:
-        student = None
+# def student_score_view(request):
+#     try:
+#         student = models.Student.objects.first()  # Retrieve the first student object from the database
+#     except models.Student.DoesNotExist:
+#         student = None
 
-    context = {
-        'page': 'student_score',
-        'page_title': 'Student Score',
-        'student': student,  # Pass the student object to the template context
-    }
+#     context = {
+#         'page': 'student_score',
+#         'page_title': 'Student Score',
+#         'student': student,  # Pass the student object to the template context
+#         'subjects': Subject,
+#     }
+#     return render(request, 'student_score.html', context)
 
-    return render(request, 'student_score.html', context)
+    
+def student_score(request):
+    subject_id = request.GET.get('subject_id')
+    subject = get_object_or_404(Subject, id=subject_id)
+    students = Student.objects.filter(classI__id=subject.classI.id)  # Adjust this query based on your models
+    return render(request, 'student_score.html', {'students': students})
+    # return render(request, "student_score.html")
+
+# def student_score_view(request):
+#     students = models.Student.objects.all()  # Query all students from the database
+#     return render(request, 'student_score.html', {'students': students})
+
+from .models import Student 
+def get_student_name(request):
+    if request.method == 'POST' and request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+        # Get the student ID from the POST data
+        student_id = request.POST.get('student_id')
+
+        # Fetch the student object based on the provided student ID
+        try:
+            student = models.Student.objects.get(id=student_id)
+        except models.Student.DoesNotExist:
+            return JsonResponse({'error': 'Student not found'}, status=404)
+
+        # Concatenate the first name, middle name, and last name fields into a single full name
+        full_name = f"{student.first_name} {student.middle_name} {student.last_name}"
+
+        # Return the full name as a JSON response
+        return JsonResponse({'name': full_name})
+    else:
+        return JsonResponse({'error': 'Invalid request'}, status=400)
+
+def subject_selection(request):
+    semesters = models.Semester.objects.all()  # Fetch all semesters
+    if request.method == 'POST':
+        # Process form submission if needed
+        pass
+    return render(request, 'subject_selection.html', {'semesters': semesters})
+
+def subject_selection(request):
+    semesters = models.Semester.objects.all()  # Fetch all semesters
+    if request.method == 'POST':
+        # Process form submission if needed
+        pass
+    return render(request, 'subject_selection.html', {'semesters': semesters})
+
+def get_subjects(request):
+    if request.method == 'GET' and 'semester_id' in request.GET:
+        semester_id = request.GET['semester_id']
+        try:
+            semester = models.Semester.objects.get(pk=semester_id)
+            subjects = Subject.objects.filter(semester=semester)
+            subject_data = {subject.id: subject.name for subject in subjects}
+            return JsonResponse({'subjects': subject_data})
+        except models.Semester.DoesNotExist:
+            return JsonResponse({'error': 'Semester not found'}, status=400)
+    else:
+        return JsonResponse({'error': 'Invalid request'}, status=400)
+
+def submit_result(request):
+    if request.method == 'POST':
+        # Process result submission
+        pass
+    return redirect('subject_selection')  # Redirect to subject selection page after submission
+
+def fetch_semesters(request):
+    semesters = Semester.objects.all()
+    data = {'semesters': list(semesters.values('id', 'semester_number'))}
+    return JsonResponse(data)
+
+
+def add_results(request):
+    if request.method == 'POST':
+        semester = request.POST.get('semester')
+        subject_id = request.POST.get('subject')
+        # Create a Result instance
+        result = models.Result.objects.create(semester=semester)
+        # Get the score for each student from the request
+        for student_id in request.POST.getlist('student_id'):
+            score = request.POST.get('score' + student_id)
+            # Create a Student_Subject_Result instance
+            Student_Subject_Result.objects.create(result=result, subject_id=subject_id, score=score)
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'failed'})

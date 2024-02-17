@@ -1,83 +1,27 @@
-<!-- {% load humanize %}
-<style>
-    #uni_modal .modal-footer {
-        display: none !important
-    }
-</style>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-            <dl>
-                <dt>Student ID/Code</dt>
-                <dd class="ps-4 fw-bolder text-primary">{{ result.student.student_id }}</dd>
-                <dt>Name</dt>
-                <dd class="ps-4 fw-bolder text-primary">{{ result.student.get_name }}</dd>
-                <dt>Gender</dt>
-                <dd class="ps-4 fw-bolder text-primary">{{ result.student.gender }}</dd>
-            </dl>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-            <dl>
-                <dt>Class</dt>
-                <dd class="ps-4 fw-bolder text-primary">{{ result.student.classI }}</dd>
-                <dt>Semester</dt>
-                <dd class="ps-4 fw-bolder text-primary">{{ result.semester }}</dd>
-            </dl>
-        </div>
-    </div>
-    <hr>
-    <table class="table table-bordered table-striped" id="marks-list">
-        <colgroup>
-            <col width="50%">
-            <col width="50%">
-        </colgroup>
-        <thead>
-            <tr class="bg-info bg-gradient">
-                <th class="px-2 py-1 text-center">Subject</th>
-                <th class="px-2 py-1 text-center">Mark</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for mark in marks %}
-            <tr>
-                <td class="px-2 py-1 align-middle">
-                    <span class="subject_name">{{ mark.subject }}</span>
-                </td>
-                <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.score }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <th class="px-2 py-1"><b>Average</b></th>
-                <th class="px-2 py-1 fw-bolder text-end" id="average">{{ result.average }}</th>
-            </tr>
-        </tfoot>
-    </table>
-    <div class="text-end mt-3">
-        <button class="btn btn-light bg-gradient btn-sm rounded-0 mb-0" type="button" data-bs-dismiss="modal"><i class="material-icons">close</i> Close</button>
-    </div>
-</div>
- -->
-
-
-
 
 {% load humanize %}
 <style>
     #uni_modal .modal-footer {
         display: none !important
     }
+    #logo-img {
+        height: 11em;
+        width: 11em;
+        object-fit: scale-down;
+        object-position: center center;
+        float: left;
+    }
 </style>
+<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+        <img src="{{ MEDIA_URL }}/default/logo1.png"alt="System Logo" class="bg-gradient-light rounded-circle border-light border-2" id="logo-img">
+     </div
 <div class="container-fluid">
     <h1 class="text-center">DAR ES SALAAM INSTITUTE OF TECHNOLOGY</h1>
     <h1 class="text-center">ACADEMIC TRANSCRIPT</h1>
 
     <!-- Logo -->
     <div class="row">
-        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
-            <img src="path_to_your_logo" alt="Your Logo">
-        </div>
+        
     </div>
 
     <div class="row">
@@ -105,12 +49,12 @@
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <dl>
-                <dt >DATE OF ADMISSION: {{ student.date_created|date:"Y-m-d" }}</dt>
+                <dt ><dd>DATE OF ADMISSION: {{ student.date_created|date:"Y-m-d" }}</dd></dt>
             </dl>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <dl>
-                <dt>DATE OF GRADUATION :yettoshow</dt>
+                <dt>DATE OF GRADUATION : </dt>
             </dl>
         </div>
     </div>
@@ -124,51 +68,19 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <dl>
-                <dt >CLASSIFICATION OF AWARD: yettoshow</dt>
+                <dt >CLASSIFICATION OF AWARD: </dt>
             </dl>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <dl>
-                <dt >OVERALL GPA: yettoshow</dt>
+                <dt ><dd>OVERALL GPA: {{ result.calculate_gpa|floatformat:2|intcomma }}</dd> </dt>
             </dl>
         </div>
     </div>
     <hr>
-    <table class="table table-bordered table-striped" id="marks-list">
-        <colgroup>
-            <col width="50%">
-            <col width="50%">
-        </colgroup>
-        <thead>
-            <tr class="bg-info bg-gradient">
-                <th class="px-2 py-1 text-center">Subject</th>
-                <th class="px-2 py-1 text-center">Mark</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for mark in marks %}
-            <tr>
-                <td class="px-2 py-1 align-middle">
-                    <span class="subject_name">{{ mark.subject }}</span>
-                </td>
-                <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.score }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <th class="px-2 py-1"><b>Average</b></th>
-                <th class="px-2 py-1 fw-bolder text-end" id="average">{{ result.average }}</th>
-            </tr>
-            <!-- gpa -->
-            <tr>
-                <th class="px-2 py-1"><b>GPA</b></th>
-                <th class="px-2 py-1 fw-bolder text-end" id="overall-gpa">0.00</th>
-            </tr>
-        </tfoot>
-    </table>
+    
 
     <!-- Additional tables -->
     <div class="row">
@@ -182,16 +94,23 @@
                     <tr>
                         <th>Code</th>
                         <th>Module Name</th>
-                        <th>Score</th>
+                        <th>Grade</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Table data for Semester 1 -->
-                    <!-- Add rows here -->
+                    {% for mark in marks %}
+                    <tr>
+                        <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.subject.code }}</td>
+                        <td class="px-2 py-1 align-middle">
+                        <span class="subject_name">{{ mark.subject }}</span>
+                        </td>
+                        <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.grade }}</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3" class="text-end">Semester GPA: [Semester 1 GPA]</td>
+                        <td colspan="3" class="text-end">Semester GPA:{{ result.calculate_gpa|floatformat:2|intcomma }}</td>
                     </tr>
                 </tfoot>
             </table>
@@ -206,16 +125,23 @@
                     <tr>
                         <th>Code</th>
                         <th>Module Name</th>
-                        <th>Score</th>
+                        <th>Grade</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Table data for Semester 2 -->
-                    <!-- Add rows here -->
+                    {% for mark in marks %}
+                    <tr>
+                        <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.subject.code }}</td>
+                        <td class="px-2 py-1 align-middle">
+                        <span class="subject_name">{{ mark.subject }}</span>
+                        </td>
+                        <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.grade }}</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3" class="text-end">Semester GPA: [Semester 2 GPA]</td>
+                        <td colspan="3" class="text-end">Semester GPA:{{ result.calculate_gpa|floatformat:2|intcomma }}</td>
                     </tr>
                 </tfoot>
             </table>
@@ -230,16 +156,23 @@
                     <tr>
                         <th>Code</th>
                         <th>Module Name</th>
-                        <th>Score</th>
+                        <th>Grade</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Table data for Semester 3 -->
-                    <!-- Add rows here -->
+                    {% for mark in marks %}
+                    <tr>
+                        <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.subject.code }}</td>
+                        <td class="px-2 py-1 align-middle">
+                        <span class="subject_name">{{ mark.subject }}</span>
+                        </td>
+                        <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.grade }}</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3" class="text-end">Semester GPA: [Semester 3 GPA]</td>
+                        <td colspan="3" class="text-end">Semester GPA:{{ result.calculate_gpa|floatformat:2|intcomma }}</td>
                     </tr>
                 </tfoot>
             </table>
@@ -257,16 +190,23 @@
                     <tr>
                         <th>Code</th>
                         <th>Module Name</th>
-                        <th>Score</th>
+                        <th>Grade</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Table data for Semester 4 -->
-                    <!-- Add rows here -->
+                    {% for mark in marks %}
+                    <tr>
+                        <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.subject.code }}</td>
+                        <td class="px-2 py-1 align-middle">
+                        <span class="subject_name">{{ mark.subject }}</span>
+                        </td>
+                        <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.grade }}</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3" class="text-end">Semester GPA: [Semester 4 GPA]</td>
+                        <td colspan="3" class="text-end">Semester GPA:{{ result.calculate_gpa|floatformat:2|intcomma }}</td>
                     </tr>
                 </tfoot>
             </table>
@@ -281,16 +221,23 @@
                     <tr>
                         <th>Code</th>
                         <th>Module Name</th>
-                        <th>score</th>
+                        <th>Grade</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Table data for Semester 5 -->
-                    <!-- Add rows here -->
+                    {% for mark in marks %}
+                    <tr>
+                        <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.subject.code }}</td>
+                        <td class="px-2 py-1 align-middle">
+                        <span class="subject_name">{{ mark.subject }}</span>
+                        </td>
+                        <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.grade }}</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3" class="text-end">Semester GPA: [Semester 5 GPA]</td>
+                        <td colspan="3" class="text-end">Semester GPA:{{ result.calculate_gpa|floatformat:2|intcomma }}</td>
                     </tr>
                 </tfoot>
             </table>
@@ -305,16 +252,23 @@
                     <tr>
                         <th>Code</th>
                         <th>Module Name</th>
-                        <th>score</th>
+                        <th>Grade</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Table data for Semester 6 -->
-                    <!-- Add rows here -->
+                    {% for mark in marks %}
+                    <tr>
+                        <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.subject.code }}</td>
+                        <td class="px-2 py-1 align-middle">
+                        <span class="subject_name">{{ mark.subject }}</span>
+                        </td>
+                        <td class="px-2 py-1 text-end subject_mark align-middle">{{ mark.grade }}</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3" class="text-end">Semester GPA: [Semester 6 GPA]</td>
+                        <td colspan="3" class="text-end">Semester GPA:{{ result.calculate_gpa|floatformat:2|intcomma }}</td>
                     </tr>
                 </tfoot>
             </table>
@@ -322,54 +276,8 @@
     </div>
 
     <div class="row">
-        <!-- Table 7 -->
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th colspan="3" class="text-center">Semester 7</th>
-                    </tr>
-                    <tr>
-                        <th>Code</th>
-                        <th>Module Name</th>
-                        <th>score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Table data for Semester 7 -->
-                    <!-- Add rows here -->
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3" class="text-end">Semester GPA: [Semester 7 GPA]</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-        <!-- Table 8 -->
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th colspan="3" class="text-center">Semester 8</th>
-                    </tr>
-                    <tr>
-                        <th>Code</th>
-                        <th>Module Name</th>
-                        <th>score</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Table data for Semester 8 -->
-                    <!-- Add rows here -->
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3" class="text-end">Semester GPA: [Semester 8 GPA]</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+
+       
     </div>
     <!-- End of additional tables -->
 

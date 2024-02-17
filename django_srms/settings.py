@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'srmsApp.apps.srmsAppConfig',
+    # 'user',
 ]
 
 MIDDLEWARE = [
@@ -136,6 +137,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [ 
     BASE_DIR / "static",
     ]
+
+# AUTH_USER_MODEL = 'user.User'
 
 #MEDIA
 MEDIA_URL = 'media/'

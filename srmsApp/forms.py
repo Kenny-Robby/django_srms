@@ -162,9 +162,8 @@ class SaveResult(forms.ModelForm):
 class SaveSubjectResult(forms.ModelForm):
     result = forms.CharField(max_length="30", label="Result ID")
     subject = forms.CharField(max_length="30", label="Subject")
-    score = forms.CharField(max_length="100", label="Score")
-    # grade = forms.CharField(max_length="100", label="Grade")
-    # grade_point = forms.CharField(max_length="100", label="Grade Point")
+    score = forms.CharField(max_length="100", label="total")
+    
 
     
     class Meta:
